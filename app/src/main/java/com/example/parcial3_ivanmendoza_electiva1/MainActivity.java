@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,28 +27,32 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView btnNavigator;
     EditText edNombres, edApellidos, edTelefono, edCorreo;
     Button btnInsert;
+    Fragment selectFragment = null;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int fargmento_mostrar = R.layout.fargmento_mostrar;
-        int fargmento_insertar = R.layout.fargmento_insertar;
-
         btnNavigator = findViewById( R.id.btnNav );
+        edNombres = findViewById( R.id.edtNombres );
+        edApellidos = findViewById( R.id.edtApellidos );
+        btnInsert = findViewById( R.id.btnGuardar );
         btnNavigator.setOnNavigationItemSelectedListener( ( BottomNavigationView.OnNavigationItemSelectedListener ) navListener );
+        selectFragment = new FragmentoInsertar();
+        getSupportFragmentManager().beginTransaction().replace( R.id.FragmentContent, selectFragment ).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            Fragment selectFragment = null;
+             Fragment selectFragment = null;
 
             switch ( item.getItemId() ){
                 case R.id.nav_update:
-                    selectFragment = new FragmentoActualizar();
+                    selectFragment =new FragmentoActualizar();
                     break;
 
                 case R.id.nav_delete:
@@ -91,6 +98,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected( items );
     }
-
-
 }
